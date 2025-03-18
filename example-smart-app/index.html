@@ -24,7 +24,7 @@
           <p><strong>Birth Date:</strong> ${birthDate}</p>
           <p><strong>ID:</strong> ${id}</p>
         `;
-      }).catch(function(error){
+      }).fail(function(error){
         document.getElementById("output").innerHTML = "Error loading patient: " + error;
       });
     });
