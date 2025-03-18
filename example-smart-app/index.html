@@ -8,14 +8,15 @@
   <div id="output">Loading patient info...</div>
 
   <script src="lib/js/fhir-client-v0.1.12.js"></script>
+  <script src="lib/js/fhir-client-v0.1.12.js"></script>
   <script>
-    FHIR.oauth2.ready().then(client => {
+    FHIR.oauth2.ready(function(client) {
       client.request("Patient/" + client.patient.id).then(patient => {
         const name = patient.name?.[0]?.given.join(" ") + " " + patient.name?.[0]?.family;
         const gender = patient.gender;
         const birthDate = patient.birthDate;
         const id = patient.id;
-
+  
         document.getElementById("output").innerHTML = `
           <p><strong>Name:</strong> ${name}</p>
           <p><strong>Gender:</strong> ${gender}</p>
@@ -27,5 +28,6 @@
       });
     });
   </script>
+  
 </body>
 </html>
