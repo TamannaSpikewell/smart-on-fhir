@@ -1,33 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Patient Info - Cerner SMART App</title>
+  <title>SMART FHIR App</title>
+  <meta charset="utf-8">
 </head>
 <body>
-  <h1>Patient Information</h1>
-  <div id="output">Loading patient info...</div>
+  <h1>Patient Info from Cerner</h1>
+  <div id="output">Loading patient data...</div>
 
+  <script src="lib/js/fhir-client-v0.1.12.js"></script>
+  <script>
+    FHIR.oauth2.ready(function(smart){
+      var patientId = smart.patient.id;
+      smart.patient.read().then(function(patient){
+        const name = patient.name?.[0]?.given?.join(" ") + " " + patient.name?.[0]?.family;
+        const gender = patient.gender;
+        const birthDate = patient.birthDate;
+        const id = patient.id;
 
-<script src="lib/js/fhir-client-v0.1.12.js"></script>
-<script>
-  FHIR.oauth2.ready(function(client) {
-    client.request("Patient/" + client.patient.id).then(patient => {
-      const name = patient.name?.[0]?.given.join(" ") + " " + patient.name?.[0]?.family;
-      const gender = patient.gender;
-      const birthDate = patient.birthDate;
-      const id = patient.id;
-
-      document.getElementById("output").innerHTML = `
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Gender:</strong> ${gender}</p>
-        <p><strong>Birth Date:</strong> ${birthDate}</p>
-        <p><strong>FHIR ID:</strong> ${id}</p>
-      `;
-    }).catch(err => {
-      document.getElementById("output").innerText = "Error fetching patient: " + err;
+        document.getElementById("output").innerHTML = `
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Gender:</strong> ${gender}</p>
+          <p><strong>Birth Date:</strong> ${birthDate}</p>
+          <p><strong>ID:</strong> ${id}</p>
+        `;
+      }).catch(function(error){
+        document.getElementById("output").innerHTML = "Error loading patient: " + error;
+      });
     });
-  });
-</script>
-
+  </script>
 </body>
 </html>
